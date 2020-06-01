@@ -1,8 +1,10 @@
 import { Link } from "gatsby";
 import PropTypes from "prop-types";
 import React from "react";
+import netlifyIdentity from "netlify-identity-widget";
 
 import gatsbyLogo from "../images/gatsby-icon.png";
+import { render } from "react-dom";
 
 const isActive = ({ isCurrent }) => {
   return { className: isCurrent ? "active" : "navlink" };
@@ -10,74 +12,86 @@ const isActive = ({ isCurrent }) => {
 
 const NavLink = props => <Link getProps={isActive} {...props} />;
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`
-    }}
-  >
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`
-      }}
-    >
-      {/* Title/logo area */}
-      <span
+class Header extends React.Component {
+  componentDidMount() {
+    netlifyIdentity.init();
+  }
+
+  render() {
+    const { siteTitle } = this.props;
+
+    return (
+      <header
         style={{
-          display: "flex",
-          alignItems: "center"
+          background: `rebeccapurple`,
+          marginBottom: `1.45rem`
         }}
       >
-        <img
-          src={gatsbyLogo}
-          alt="Gatsby logo"
+        <div
           style={{
-            width: "50px",
-            display: "inline-block",
-            margin: "0 10px 0 0",
-            border: "4px solid orange",
-            borderRadius: "100px"
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            margin: `0 auto`,
+            maxWidth: 960,
+            padding: `1.45rem 1.0875rem`
           }}
-        />
-        <h1 style={{ margin: 0 }}>
-          <NavLink to="/">{siteTitle}</NavLink>
-        </h1>
-      </span>
-      <NavLink to="/blog">Blog</NavLink>
-      <NavLink to="/products">Store</NavLink>
+        >
+          {/* Title/logo area */}
+          <span
+            style={{
+              display: "flex",
+              alignItems: "center"
+            }}
+          >
+            <img
+              src={gatsbyLogo}
+              alt="Gatsby logo"
+              style={{
+                width: "50px",
+                display: "inline-block",
+                margin: "0 10px 0 0",
+                border: "4px solid orange",
+                borderRadius: "100px"
+              }}
+            />
+            <h1 style={{ margin: 0 }}>
+              <NavLink to="/">{siteTitle}</NavLink>
+            </h1>
+          </span>
+          <NavLink to="/blog">Blog</NavLink>
+          <NavLink to="/products">Store</NavLink>
 
-      {/* Shopping Cart Summary */}
-      <div
-        style={{ color: "#fff", cursor: "pointer" }}
-        className="snipcart-summary snipcart-checkout"
-      >
-        <div>
-          <strong>My Cart</strong>
+          <div data-netlify-identity-menu></div>
+
+          {/* Shopping Cart Summary */}
+          <div
+            style={{ color: "#fff", cursor: "pointer" }}
+            className="snipcart-summary snipcart-checkout"
+          >
+            <div>
+              <strong>My Cart</strong>
+            </div>
+            <div>
+              <span
+                style={{ fontWeight: "bold" }}
+                className="snipcart-total-items"
+              ></span>{" "}
+              Items in Cart
+            </div>
+            <div>
+              Total Price{" "}
+              <span
+                className="snipcart-total-price"
+                style={{ fontWeight: "bold" }}
+              ></span>
+            </div>
+          </div>
         </div>
-        <div>
-          <span
-            style={{ fontWeight: "bold" }}
-            className="snipcart-total-items"
-          ></span>{" "}
-          Items in Cart
-        </div>
-        <div>
-          Total Price{" "}
-          <span
-            className="snipcart-total-price"
-            style={{ fontWeight: "bold" }}
-          ></span>
-        </div>
-      </div>
-    </div>
-  </header>
-);
+      </header>
+    );
+  }
+}
 
 Header.propTypes = {
   siteTitle: PropTypes.string

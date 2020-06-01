@@ -636,3 +636,21 @@ pre tt:after {
 .navlink:hover {
   text-decoration: underline;
 }
+
+/* Netlify Identity */
+.netlify-identity-menu {
+  list-style: none;
+  margin: 0;
+}
+
+.netlify-identity-signup {
+  color: #fff;
+}
+
+.netlify-identity-login {
+  color: #fff;
+}
+
+.netlify-identity-logout {
+  color: #fff;
+}
